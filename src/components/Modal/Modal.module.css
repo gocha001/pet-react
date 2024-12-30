@@ -1,0 +1,34 @@
+.wrapper {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+.content {
+  position: relative;
+  background-color: white;
+  padding: 20px;
+  overflow: hidden;
+  max-width: 1000px;
+  border-radius: 5px;
+}
+.closeBtn {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background-color: transparent;
+  border: none;
+  font-size: 28px;
+  cursor: pointer;
+  padding: 0;
+}
+
+@media screen and (max-width: 375px) {
+  .content {
+   margin-top: 160px;
+   padding: 0;
+  }
+}
+

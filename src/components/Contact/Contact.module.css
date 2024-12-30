@@ -1,0 +1,139 @@
+.container {
+  display: flex;
+  flex-direction: row;
+  width: 380px;
+  height: 100px;
+  border: solid 1px;
+  border-radius: 4px;
+  border-color: black;
+  justify-content: space-between;
+  align-items: center;
+  background-color: azure;
+  box-shadow: 0 0 5px 5px lightseagreen;
+  border: none;
+}
+
+.contact p {
+  margin-top: 10px;
+  margin-bottom: 0;
+  font-size: 24px;
+  font-weight: 400;
+  height: 34px;
+  margin-left: 10px;
+}
+
+.icon {
+  margin-top: 16px;
+}
+
+.item {
+  display: flex;
+  flex-direction: row;
+  margin-left: 10px;
+}
+
+.btn {
+  width: 80px;
+  height: 40px;
+  border-radius: 4px;
+  border: solid 1px;
+  margin-right: 10px;
+  background-color: bisque;
+  font-size: 20px;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media screen and (max-width: 375px) {
+  .container {
+    width: 320px;
+  }
+  .contact p {
+    font-size: 16px;
+  }
+}
+
+.text {
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.contBtn {
+  display: flex;
+  gap: 60px;
+  justify-content: center;
+}
+
+.modalBtn {
+  background-color: darkgrey;
+  font-size: 20px;
+}
+
+.contBtn {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.formContainer {
+  width: 380px;
+  height: 300px;
+}
+
+.formContainer Form {
+  display: flex;
+  flex-direction: column;
+  & label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 24px;
+  }
+}
+
+.field {
+  width: 340px;
+  height: 40px;
+  border-radius: 4px;
+  border: solid 1px;
+}
+
+.btnForm {
+  display: flex;
+  justify-content: center;
+  background-color: aqua;
+  width: 340px;
+  margin-top: 16px;
+  margin-left: 20px;
+}
+
+.error {
+  font-size: 16px;
+  color: red;
+}
+
+@media screen and (max-width: 375px) {
+  .formContainer {
+    width: 320px;
+  }
+  .field {
+    width: 300px;
+  }
+  .btnForm {
+    width: 300px;
+    margin-left: 10px;
+  }
+}
+
+.modalTitle {
+  display: flex;
+  justify-content: center;
+  font-size: 30px;
+  padding: 0;
+  & p {
+    margin: 0;
+  }
+}

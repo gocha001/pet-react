@@ -1,0 +1,54 @@
+.app {
+  display: flex;
+  font-size: 32px;
+  height: 60px;
+  background-color: aqua;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  justify-content: space-around;
+  z-index: 9;
+}
+
+.user {
+  font-weight: bold;
+  color: blue;
+}
+
+.links {
+  display: flex;
+}
+
+.link {
+  color: rgb(71, 41, 238);
+  font-weight: bold;
+  &:hover {
+    color: black;
+  }
+}
+
+.active {
+  color: blue;
+  border-radius: 4px;
+  font-weight: bold;
+}
+
+@media screen and (max-width: 900px) {
+  .app {
+    height: 120px;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+@media screen and (max-width: 450px) {
+  .app {
+    height: 180px;
+  }
+}
+
+@media screen and (max-width: 350px) {
+  .app {
+    height: 240px;
+  }
+}

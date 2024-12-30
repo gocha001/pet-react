@@ -1,0 +1,28 @@
+.title {
+  font-size: 40px;
+  margin-top: 80px;
+}
+
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.note {
+  font-size: 20px;
+  color: blue;
+}
+
+@media screen and (max-width: 900px) {
+  .title {
+    margin-top: 140px;
+  }
+}
+
+@media screen and (max-width: 450px) {
+  .title {
+    margin-top: 190px;
+  }
+}

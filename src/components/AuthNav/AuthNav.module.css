@@ -1,0 +1,18 @@
+.wrapper {
+  display: flex;
+  gap: 40px;
+}
+
+.link {
+  color: rgb(71, 41, 238);
+  font-weight: bold;
+  &:hover {
+    color: black;
+  }
+}
+
+.active {
+  color: blue;
+  border-radius: 4px;
+  font-weight: bold;
+}

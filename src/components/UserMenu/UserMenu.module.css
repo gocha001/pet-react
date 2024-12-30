@@ -1,0 +1,22 @@
+.btn {
+  height: 50px;
+  color: brown;
+  margin-top: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media screen and (max-width: 900px) {
+  .wrapper {
+    position: fixed;
+    top: 10px;
+    right: 4px;
+  }
+}
+
+@media screen and (max-width: 450px) {
+  .wrapper {
+    position: static;
+  }
+}

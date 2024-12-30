@@ -1,0 +1,13 @@
+.container {
+  margin-top: 8px;
+  display: flex;
+  justify-content: center;
+}
+
+.container ul {
+  list-style-type: none;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 20px;
+}
