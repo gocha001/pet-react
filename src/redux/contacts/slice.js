@@ -25,20 +25,20 @@ const slice = createSlice({
       })
       .addCase(deleteContact.fulfilled, (state, action) => {
         state.items = state.items.filter(
-          (item) => item.id !== action.payload.id
+          (item) => item._id !== action.payload.data._id
         );
-        toast.success(`Contact ${action.payload.name} deleted successfully.`);
+        toast.success(`Contact ${action.payload.data.name} deleted successfully.`);
       })
       .addCase(addContact.fulfilled, (state, action) => {
-        state.items.push(action.payload);
-        toast.success(`Contact ${action.payload.name} successfully added.`);
+        state.items.push(action.payload.data);
+        toast.success(`Contact ${action.payload.data.name} successfully added.`);
       })
       .addCase(patchContact.fulfilled, (state, action) => {
         state.items = state.items.filter(
-          (item) => item.id !== action.payload.id
+          (item) => item._id !== action.payload.data._id
         );
-        state.items.push(action.payload);
-        toast.success(`Contact ${action.payload.name} has been edited.`);
+        state.items.push(action.payload.data);
+        toast.success(`Contact ${action.payload.data.name} has been edited.`);
       })
       .addCase(logout.fulfilled, () => initialState)
       .addMatcher(

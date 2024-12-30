@@ -30,6 +30,7 @@ export const deleteContact = createAsyncThunk(
 export const addContact = createAsyncThunk(
   "contacts/addContact",
   async (body, thunkApi) => {
+    console.log(`body${body}`);
     try {
       const { data } = await Api.post(`/contacts`, body);
       return data;
