@@ -16,7 +16,7 @@ const ContactForm = () => {
 
   const initialValues = {
     name: "",
-    number: "",
+    phoneNumber: "",
   };
 
   const orderSchema = Yup.object().shape({
@@ -24,7 +24,7 @@ const ContactForm = () => {
       .min(3, "Too Short!")
       .max(50, "Too Long!")
       .required("Required"),
-    number: Yup.string()
+    phoneNumber: Yup.string()
       .min(3, "Too Short!")
       .max(50, "Too Long!")
       .required("Required"),
@@ -56,11 +56,11 @@ const ContactForm = () => {
             <span>Number</span>
             <Field
               className={css.field}
-              name="number"
+              name="phoneNumber"
               placeholder="Enter a number"
             />
             <ErrorMessage
-              name="number"
+              name="phoneNumber"
               component="span"
               className={css.error}
             />
