@@ -10,7 +10,6 @@ import { selectUser } from "../../redux/auth/selectors";
 const AppBar = () => {
   
   const user = useSelector(selectUser);
-  console.log(user);
   const isLoggedIn = useSelector(selectIsLoggedIn);
 
   return (

@@ -3,12 +3,13 @@ import axios from "axios";
 
 export const Api = axios.create({
   // baseURL: "https://connections-api.goit.global/",
-  baseURL: "https://nodejs-hw-mongodb-9-lmos.onrender.com",
-  // baseURL: "http://localhost:3000/",
+  // baseURL: "https://nodejs-hw-mongodb-9-lmos.onrender.com",
+  baseURL: "http://localhost:3000/",
 });
 
 const setAuthHeader = (token) => {
   Api.defaults.headers.common.Authorization = `Bearer ${token}`;
+  Api.defaults.withCredentials = true;
 };
 
 export const register = createAsyncThunk(
@@ -17,7 +18,6 @@ export const register = createAsyncThunk(
     try {
       const { data } = await Api.post("/auth/register", credentials);
       setAuthHeader(data.accessToken);
-      console.log(data);
       return data;
     } catch (error) {
       return thunkApi.rejectWithValue(error.message);
@@ -38,10 +38,9 @@ export const login = createAsyncThunk(
   }
 );
 
-export const logout = createAsyncThunk("logout", async (credentials, thunkApi) => {
+export const logout = createAsyncThunk("logout", async (_, thunkApi) => {
   try {
-    console.log(credentials);
-    await Api.post("/auth/logout", credentials);
+    await Api.post("/auth/logout");
   } catch (error) {
     return thunkApi.rejectWithValue(error.message);
   }

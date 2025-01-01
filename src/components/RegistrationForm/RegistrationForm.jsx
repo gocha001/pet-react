@@ -18,7 +18,6 @@ const RegistrationForm = () => {
 
   const onSubmit = (values, options) => {
     dispatch(register(values));
-    console.log(values);
     options.resetForm();
   };
 
