@@ -25,9 +25,9 @@ const slice = createSlice({
       .addCase(deleteContact.fulfilled, (state, action) => {
         console.log(action.payload);
         state.items = state.items.filter(
-          (item) => item._id != action.payload.data._id
+          (item) => item._id != action.payload.data.data._id
         );
-        toast.success(`Contact ${action.payload.data.name} deleted successfully.`);
+        toast.success(`Contact ${action.payload.data.data.name} deleted successfully.`);
       })
       .addCase(addContact.fulfilled, (state, action) => {
         state.items.push(action.payload.data);
