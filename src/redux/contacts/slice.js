@@ -21,11 +21,11 @@ const slice = createSlice({
     builder
       .addCase(fetchContacts.fulfilled, (state, action) => {
         state.items = action.payload.data.data;
-        console.log(action.payload.data.data);
       })
       .addCase(deleteContact.fulfilled, (state, action) => {
+        console.log(action.payload);
         state.items = state.items.filter(
-          (item) => item._id !== action.payload.data._id
+          (item) => item._id != action.payload.data._id
         );
         toast.success(`Contact ${action.payload.data.name} deleted successfully.`);
       })

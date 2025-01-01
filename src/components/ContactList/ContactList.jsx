@@ -18,11 +18,11 @@ const ContactList = () => {
       <ul>
         {inAlphabeticalOrder.map((contact) => {
           return (
-            <li key={contact.id}>
+            <li key={contact._id}>
               <Contact
-                id={contact.id}
+                id={contact._id}
                 name={contact.name}
-                number={contact.number}
+                number={contact.phoneNumber}
               />
             </li>
           );
