@@ -14,7 +14,7 @@ export const selectFilteredContacts = createSelector(
           .toLowerCase()
           .trim()
           .includes(filter.toLowerCase().trim()) ||
-        contact.number
+        contact.phoneNumber
           .toLowerCase()
           .trim()
           .includes(filter.toLowerCase().trim())
