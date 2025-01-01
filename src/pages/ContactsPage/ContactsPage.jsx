@@ -45,7 +45,7 @@ function ContactsPage() {
           animate="visible"
           className={css.title}
         >
-          Phonebook
+          Contact book
         </motion.h1>
         <ContactForm />
         {loading && <Loader />}
