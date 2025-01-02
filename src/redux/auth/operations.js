@@ -59,3 +59,35 @@ export const refresh = createAsyncThunk("refresh", async (_, thunkApi) => {
     return thunkApi.rejectWithValue(error.message);
   }
 });
+
+Api.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+    const originalRequest = error.config;
+
+    // Якщо отримано статус 401 і токен ще не оновлювався
+    if (error.response?.status === 401 && !originalRequest._retry) {
+      originalRequest._retry = true;
+
+      try {
+        // Оновлення токена через refreshToken
+        const { data } = await Api.post("/auth/refresh", {
+          token: localStorage.getItem("refreshToken"),
+          
+        });
+
+        // Оновлення заголовків
+        Api.defaults.headers.common.Authorization = `Bearer ${data.accessToken}`;
+        originalRequest.headers.Authorization = `Bearer ${data.accessToken}`;
+
+        // Повторний запит
+        return Api(originalRequest);
+      } catch (refreshError) {
+        console.error("Token refresh failed:", refreshError);
+        return Promise.reject(refreshError);
+      }
+    }
+
+    return Promise.reject(error);
+  }
+);
