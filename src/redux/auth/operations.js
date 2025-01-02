@@ -1,5 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
+import { store } from "../store";
 
 export const Api = axios.create({
   // baseURL: "https://connections-api.goit.global/",
@@ -60,33 +61,75 @@ export const logout = createAsyncThunk("logout", async (_, thunkApi) => {
 //   }
 // });
 
-export const refresh = Api.interceptors.response.use(
-  (response) => response,
+Api.interceptors.response.use(
+  (response) => response, // Успішна відповідь
   async (error) => {
     const originalRequest = error.config;
 
-    // Якщо отримано статус 401 і токен ще не оновлювався
     if (error.response?.status === 401 && !originalRequest._retry) {
-      originalRequest._retry = true;
+      originalRequest._retry = true; // Позначаємо, що запит повторюється
 
       try {
-        // Оновлення токена через refreshToken
-        const { data } = await Api.post("/auth/refresh", {
-          token: localStorage.getItem("refreshToken"),
+        // Отримуємо токен із Redux Store
+        const savedToken = store.getState().auth.token;
+        if (!savedToken) {
+          return Promise.reject("Token does not exist!");
+        }
+
+        // Оновлюємо токен через /auth/refresh
+        const { data } = await Api.post("/auth/refresh");
+        const newAccessToken = data.accessToken;
+
+        // Зберігаємо новий токен у Redux Store
+        store.dispatch({
+          type: "auth/setToken",
+          payload: newAccessToken,
         });
 
-        // Оновлення заголовків
-        Api.defaults.headers.common.Authorization = `Bearer ${data.accessToken}`;
-        originalRequest.headers.Authorization = `Bearer ${data.accessToken}`;
+        // Встановлюємо новий токен у заголовок
+        setAuthHeader(newAccessToken);
 
-        // Повторний запит
+        // Повторюємо оригінальний запит
+        originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
         return Api(originalRequest);
       } catch (refreshError) {
-        console.error("Token refresh failed:", refreshError);
+        // Якщо оновлення токена не вдалося
         return Promise.reject(refreshError);
       }
     }
 
+    // Інші помилки
     return Promise.reject(error);
   }
 );
+
+// Api.interceptors.response.use(
+//   (response) => response,
+//   async (error) => {
+//     const originalRequest = error.config;
+
+//     // Якщо отримано статус 401 і токен ще не оновлювався
+//     if (error.response?.status === 401 && !originalRequest._retry) {
+//       originalRequest._retry = true;
+
+//       try {
+//         // Оновлення токена через refreshToken
+//         const { data } = await Api.post("/auth/refresh", {
+//           token: localStorage.getItem("refreshToken"),
+//         });
+
+//         // Оновлення заголовків
+//         Api.defaults.headers.common.Authorization = `Bearer ${data.accessToken}`;
+//         originalRequest.headers.Authorization = `Bearer ${data.accessToken}`;
+
+//         // Повторний запит
+//         return Api(originalRequest);
+//       } catch (refreshError) {
+//         console.error("Token refresh failed:", refreshError);
+//         return Promise.reject(refreshError);
+//       }
+//     }
+
+//     return Promise.reject(error);
+//   }
+// );

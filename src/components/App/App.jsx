@@ -1,9 +1,12 @@
 import { Routes, Route } from "react-router-dom";
 import Layout from "../Layout.jsx";
 import HomePage from "../../pages/HomePage/HomePage.jsx";
-import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
-import { refresh } from "../../redux/auth/operations.js";
+import {
+  // useDispatch,
+  useSelector
+} from "react-redux";
+// import { useEffect } from "react";
+// import { refresh } from "../../redux/auth/operations.js";
 import { selectIsRefreshing } from "../../redux/auth/selectors.js";
 import Loader from "../Loader/Loader.jsx";
 import { PrivateRoute } from "../PrivateRoute.jsx";
@@ -21,10 +24,10 @@ const ContactsPage = lazy(() =>
 );
 
 const App = () => {
-  const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(refresh());
-  }, [dispatch]);
+  // const dispatch = useDispatch();
+  // useEffect(() => {
+  //   dispatch(refresh());
+  // }, [dispatch]);
 
   const isRefreshing = useSelector(selectIsRefreshing);
 
