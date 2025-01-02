@@ -60,7 +60,7 @@ export const logout = createAsyncThunk("logout", async (_, thunkApi) => {
 //   }
 // });
 
-Api.interceptors.response.use(
+export const refresh = Api.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalRequest = error.config;
@@ -73,7 +73,6 @@ Api.interceptors.response.use(
         // Оновлення токена через refreshToken
         const { data } = await Api.post("/auth/refresh", {
           token: localStorage.getItem("refreshToken"),
-          
         });
 
         // Оновлення заголовків
