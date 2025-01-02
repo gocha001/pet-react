@@ -1,8 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import { store } from "../store";
-import { useDispatch } from "react-redux";
-import { useEffect } from "react";
+
 
 export const Api = axios.create({
   // baseURL: "https://connections-api.goit.global/",
@@ -64,82 +62,4 @@ export const refresh = createAsyncThunk("refresh", async (_, thunkApi) => {
 });
 
 
-  Api.interceptors.response.use(
-    (response) => response, // Успішна відповідь
-    async (error) => {
-      const originalRequest = error.config;
-
-      if (error.response?.status === 401 && !originalRequest._retry) {
-        originalRequest._retry = true; // Позначаємо, що запит повторюється
-
-        try {
-          const dispatch = useDispatch();
-          useEffect(() => {
-            dispatch(refresh());
-          }, [dispatch]);
-          // // Отримуємо токен із Redux Store
-          // const savedToken = thunkApi.getState().auth.token;
-          // if (!savedToken) {
-          //   return thunkApi.rejectWithValue("Token does not exist!");
-          // }
-          // setAuthHeader(savedToken);
-          // // Оновлюємо токен через /auth/refresh
-          // const { data } = await Api.post("/auth/refresh");
-          // const newAccessToken = data.accessToken;
-
-          // // Зберігаємо новий токен у Redux Store
-          // store.dispatch({
-          //   type: "auth/setToken",
-          //   payload: newAccessToken,
-          // });
-
-          // // Встановлюємо новий токен у заголовок
-          // setAuthHeader(newAccessToken);
-
-          // Повторюємо оригінальний запит
-          originalRequest.headers.Authorization = `Bearer ${
-            store.getState().auth.token
-          }`;
-          return Api(originalRequest);
-        } catch (refreshError) {
-          // Якщо оновлення токена не вдалося
-          return Promise.reject(refreshError);
-        }
-      }
-
-      // Інші помилки
-      return Promise.reject(error);
-    }
-  );
-
-
-// Api.interceptors.response.use(
-//   (response) => response,
-//   async (error) => {
-//     const originalRequest = error.config;
-
-//     // Якщо отримано статус 401 і токен ще не оновлювався
-//     if (error.response?.status === 401 && !originalRequest._retry) {
-//       originalRequest._retry = true;
-
-//       try {
-//         // Оновлення токена через refreshToken
-//         const { data } = await Api.post("/auth/refresh", {
-//           token: localStorage.getItem("refreshToken"),
-//         });
-
-//         // Оновлення заголовків
-//         Api.defaults.headers.common.Authorization = `Bearer ${data.accessToken}`;
-//         originalRequest.headers.Authorization = `Bearer ${data.accessToken}`;
-
-//         // Повторний запит
-//         return Api(originalRequest);
-//       } catch (refreshError) {
-//         console.error("Token refresh failed:", refreshError);
-//         return Promise.reject(refreshError);
-//       }
-//     }
-
-//     return Promise.reject(error);
-//   }
-// );
+ 
