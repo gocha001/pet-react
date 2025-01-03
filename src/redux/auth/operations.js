@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-// import { store } from "../store.js";
+import { store } from "../store.js";
 
 export const Api = axios.create({
   // baseURL: "https://connections-api.goit.global/",
@@ -82,20 +82,20 @@ Api.interceptors.response.use(
 
       try {
         // Викликаємо refresh-дію
-        // const result = await store.dispatch(refresh());
+        const result = await store.dispatch(refresh());
 
-        // if (refresh.fulfilled.match(result)) {
-        //   // Оновлюємо токен у заголовках
-        //   const newToken = result.payload.accessToken;
-        //   setAuthHeader(newToken);
+        if (refresh.fulfilled.match(result)) {
+          // Оновлюємо токен у заголовках
+          const newToken = result.payload.accessToken;
+          setAuthHeader(newToken);
 
-        //   // Повторюємо запит
-        //   originalRequest.headers.Authorization = `Bearer ${newToken}`;
-        //   return Api(originalRequest);
-        // } else {
+          // Повторюємо запит
+          originalRequest.headers.Authorization = `Bearer ${newToken}`;
+          return Api(originalRequest);
+        } else {
         //   // Якщо оновлення не вдалося
-        //   return Promise.reject(result.payload);
-        // }
+          return Promise.reject(result.payload);
+        }
       } catch (err) {
         return Promise.reject(err);
       }
