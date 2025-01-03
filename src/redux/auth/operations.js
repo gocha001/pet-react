@@ -4,8 +4,8 @@ import { store } from "../store.js";
 
 export const Api = axios.create({
   // baseURL: "https://connections-api.goit.global/",
-  // baseURL: "https://nodejs-hw-mongodb-9-lmos.onrender.com",
-  baseURL: "http://localhost:3000/",
+  baseURL: "https://nodejs-hw-mongodb-9-lmos.onrender.com",
+  // baseURL: "http://localhost:3000/",
 });
 
 const setAuthHeader = (token) => {
