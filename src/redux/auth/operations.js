@@ -1,6 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { store } from "../store.js";
+import { setToken } from "./slice.js";
 
 export const Api = axios.create({
   // baseURL: "https://connections-api.goit.global/",
@@ -11,7 +12,7 @@ export const Api = axios.create({
 
 const setAuthHeader = (token) => {
   Api.defaults.headers.common.Authorization = `Bearer ${token}`;
-  // Api.defaults.withCredentials = true;
+  Api.defaults.withCredentials = true;
 };
 
 export const register = createAsyncThunk(
@@ -91,6 +92,7 @@ Api.interceptors.response.use(
       originalRequest._retry = true;
 
       console.log("Retry flag:", originalRequest._retry);
+      console.log("Retrying with refresh token...");
 
       try {
         // Викликаємо refresh-дію
@@ -99,6 +101,10 @@ Api.interceptors.response.use(
         if (refresh.fulfilled.match(result)) {
           // Оновлюємо токен у заголовках
           const newToken = result.payload.accessToken;
+
+          console.log("New token received:", newToken);
+          store.dispatch(setToken(newToken));
+
           setAuthHeader(newToken);
 
           // Повторюємо запит
