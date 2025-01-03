@@ -106,6 +106,7 @@ Api.interceptors.response.use(
         } else {
           // Якщо оновлення не вдалося
           console.error("Refresh token failed:", result.payload);
+          store.dispatch(logout());
           return Promise.reject(result.payload);
         }
       } catch (err) {
