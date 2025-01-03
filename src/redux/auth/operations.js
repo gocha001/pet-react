@@ -30,7 +30,7 @@ export const register = createAsyncThunk(
 );
 
 export const login = createAsyncThunk(
-  "login",
+  "auth/login",
   async (credentials, thunkApi) => {
     try {
       const { data } = await Api.post("/auth/login", credentials);
@@ -45,7 +45,7 @@ export const login = createAsyncThunk(
   }
 );
 
-export const logout = createAsyncThunk("logout", async (_, thunkApi) => {
+export const logout = createAsyncThunk("auth/logout", async (_, thunkApi) => {
   try {
     await Api.post("/auth/logout");
 
@@ -54,7 +54,7 @@ export const logout = createAsyncThunk("logout", async (_, thunkApi) => {
   }
 });
 
-export const refresh = createAsyncThunk("refresh", async (_, thunkApi) => {
+export const refresh = createAsyncThunk("auth/refresh", async (_, thunkApi) => {
   const savedToken = thunkApi.getState().auth.token;
 
   if (!savedToken) {
