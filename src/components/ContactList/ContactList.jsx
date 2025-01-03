@@ -23,6 +23,9 @@ const ContactList = () => {
                 id={contact._id}
                 name={contact.name}
                 number={contact.phoneNumber}
+                email={contact.email}
+                contactType={contact.contactType}
+                isFavourite={contact.isFavourite}
               />
             </li>
           );
