@@ -68,7 +68,8 @@ export const refresh = createAsyncThunk("auth/refresh", async (_, thunkApi) => {
     return data;
     
   } catch (error) {
-    return thunkApi.rejectWithValue(error.message);
+    console.error("Error in refresh token:", error);
+    return thunkApi.rejectWithValue(error.response?.data || error.message);
   }
 });
 
@@ -77,12 +78,18 @@ Api.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
 
+    console.log("Original request:", originalRequest.url);
+    console.log("Response status:", error.response?.status);
+    console.log("Retry flag:", originalRequest._retry);
+
     if (
       error.response?.status === 401 &&
       !originalRequest._retry &&
       !originalRequest.url.includes("/auth/refresh")
     ) {
       originalRequest._retry = true;
+
+      console.log("Retry flag:", originalRequest._retry);
 
       try {
         // Викликаємо refresh-дію
@@ -98,9 +105,11 @@ Api.interceptors.response.use(
           return Api(originalRequest);
         } else {
           // Якщо оновлення не вдалося
+          console.error("Refresh token failed:", result.payload);
           return Promise.reject(result.payload);
         }
       } catch (err) {
+         console.error("Failed to refresh token:", err);
         store.dispatch(logout());
         return Promise.reject(err);
       }
