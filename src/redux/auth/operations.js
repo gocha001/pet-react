@@ -5,12 +5,13 @@ import axios from "axios";
 export const Api = axios.create({
   // baseURL: "https://connections-api.goit.global/",
   baseURL: "https://nodejs-hw-mongodb-9-lmos.onrender.com",
+  withCredentials: true,
   // baseURL: "http://localhost:3000/",
 });
 
 const setAuthHeader = (token) => {
   Api.defaults.headers.common.Authorization = `Bearer ${token}`;
-  Api.defaults.withCredentials = true;
+  // Api.defaults.withCredentials = true;
 };
 
 export const register = createAsyncThunk(
