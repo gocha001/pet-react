@@ -105,10 +105,14 @@ Api.interceptors.response.use(
           console.log("New token received:", newToken);
           store.dispatch(setToken(newToken));
 
-          setAuthHeader(newToken);
-
           // Повторюємо запит
           originalRequest.headers.Authorization = `Bearer ${newToken}`;
+
+          setAuthHeader(newToken);
+
+          console.log("Retrying with new token:", newToken);
+          console.log("Updated headers for retry:", originalRequest.headers);
+
           return Api(originalRequest);
         } else {
           // Якщо оновлення не вдалося
