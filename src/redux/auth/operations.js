@@ -101,6 +101,7 @@ Api.interceptors.response.use(
           return Promise.reject(result.payload);
         }
       } catch (err) {
+        store.dispatch(logout());
         return Promise.reject(err);
       }
     }
