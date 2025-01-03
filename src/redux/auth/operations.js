@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-// import { store } from "../store.js";
+import { store } from "../store.js";
 
 export const Api = axios.create({
   // baseURL: "https://connections-api.goit.global/",
@@ -77,28 +77,32 @@ Api.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
 
-    if (error.response?.status === 401 && !originalRequest._retry) {
+    if (
+      error.response?.status === 401 &&
+      !originalRequest._retry &&
+      !originalRequest.url.includes("/auth/refresh")
+    ) {
       originalRequest._retry = true;
 
-      // try {
-      //   // Викликаємо refresh-дію
-      //   const result = await store.dispatch(refresh());
+      try {
+        // Викликаємо refresh-дію
+        const result = await store.dispatch(refresh());
 
-      //   if (refresh.fulfilled.match(result)) {
-      //     // Оновлюємо токен у заголовках
-      //     const newToken = result.payload.accessToken;
-      //     setAuthHeader(newToken);
+        if (refresh.fulfilled.match(result)) {
+          // Оновлюємо токен у заголовках
+          const newToken = result.payload.accessToken;
+          setAuthHeader(newToken);
 
-      //     // Повторюємо запит
-      //     originalRequest.headers.Authorization = `Bearer ${newToken}`;
-      //     return Api(originalRequest);
-      //   } else {
-      //   //   // Якщо оновлення не вдалося
-      //     return Promise.reject(result.payload);
-      //   }
-      // } catch (err) {
-      //   return Promise.reject(err);
-      // }
+          // Повторюємо запит
+          originalRequest.headers.Authorization = `Bearer ${newToken}`;
+          return Api(originalRequest);
+        } else {
+          // Якщо оновлення не вдалося
+          return Promise.reject(result.payload);
+        }
+      } catch (err) {
+        return Promise.reject(err);
+      }
     }
 
     return Promise.reject(error);
