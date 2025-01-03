@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-// import { store } from "../store.js";
+import { store } from "../store.js";
 
 export const Api = axios.create({
   // baseURL: "https://connections-api.goit.global/",
@@ -74,3 +74,49 @@ export const refresh = createAsyncThunk("auth/refresh", async (_, thunkApi) => {
   }
 });
 
+Api.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+    const originalRequest = error.config;
+
+    console.log("Original request:", originalRequest.url);
+    console.log("Response status:", error.response?.status);
+    console.log("Retry flag:", originalRequest._retry);
+
+    if (
+      error.response?.status === 401 &&
+      !originalRequest._retry &&
+      !originalRequest.url.includes("/auth/refresh")
+    ) {
+      originalRequest._retry = true;
+
+      console.log("Retry flag:", originalRequest._retry);
+
+      try {
+        // Викликаємо refresh-дію
+        const result = await store.dispatch(refresh());
+
+        if (refresh.fulfilled.match(result)) {
+          // Оновлюємо токен у заголовках
+          const newToken = result.payload.accessToken;
+          setAuthHeader(newToken);
+
+          // Повторюємо запит
+          originalRequest.headers.Authorization = `Bearer ${newToken}`;
+          return Api(originalRequest);
+        } else {
+          // Якщо оновлення не вдалося
+          console.error("Refresh token failed:", result.payload);
+          store.dispatch(logout());
+          return Promise.reject(result.payload);
+        }
+      } catch (err) {
+        console.error("Failed to refresh token:", err);
+        store.dispatch(logout());
+        return Promise.reject(err);
+      }
+    }
+
+    return Promise.reject(error);
+  }
+);
