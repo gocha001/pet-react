@@ -66,7 +66,8 @@ export const refresh = createAsyncThunk("auth/refresh", async (_, thunkApi) => {
   setAuthHeader(savedToken);
 
   try {
-    const { data } = await Api.post("/auth/refresh");
+    const response = await Api.post("/auth/refresh");
+    const data = response.data;
      console.log("Server response:", data); // Перевірте, чи сервер повертає правильні дані
 
      if (!data.accessToken) {
