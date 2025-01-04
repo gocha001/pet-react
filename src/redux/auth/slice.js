@@ -36,8 +36,8 @@ const slice = createSlice({
       })
       .addCase(logout.fulfilled, () => initialState)
       .addCase(refresh.fulfilled, (state, action) => {
-        state.user.name = action.payload.name;
-        state.user.email = action.payload.email;
+        // state.user.name = action.payload.name;
+        // state.user.email = action.payload.email;
         state.token = action.payload.accessToken;
         state.isLoggedIn = true;
         state.isRefreshing = false;

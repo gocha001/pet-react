@@ -12,7 +12,7 @@ export const Api = axios.create({
 
 const setAuthHeader = (token) => {
   Api.defaults.headers.common.Authorization = `Bearer ${token}`;
-  Api.defaults.withCredentials = true;
+  // Api.defaults.withCredentials = true;
 };
 
 export const register = createAsyncThunk(
@@ -58,7 +58,7 @@ export const logout = createAsyncThunk("auth/logout", async (_, thunkApi) => {
 
 export const refresh = createAsyncThunk("auth/refresh", async (_, thunkApi) => {
   const savedToken = thunkApi.getState().auth.token;
-
+  console.log(savedToken);
   if (!savedToken) {
     return thunkApi.rejectWithValue("Token does not exist!");
   };
@@ -66,8 +66,8 @@ export const refresh = createAsyncThunk("auth/refresh", async (_, thunkApi) => {
   setAuthHeader(savedToken);
 
   try {
-    const response = await Api.post("/auth/refresh");
-    const data = response.data;
+    const {data} = await Api.post("/auth/refresh");
+    // const data = response.data;
      console.log("Server response:", data); // Перевірте, чи сервер повертає правильні дані
 
      if (!data.accessToken) {
