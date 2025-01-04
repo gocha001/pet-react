@@ -2,11 +2,11 @@ import { Routes, Route } from "react-router-dom";
 import Layout from "../Layout.jsx";
 import HomePage from "../../pages/HomePage/HomePage.jsx";
 import {
-  useDispatch,
+  // useDispatch,
   useSelector
 } from "react-redux";
-import { useEffect } from "react";
-import { refresh } from "../../redux/auth/operations.js";
+// import { useEffect } from "react";
+// import { refresh } from "../../redux/auth/operations.js";
 import { selectIsRefreshing } from "../../redux/auth/selectors.js";
 import Loader from "../Loader/Loader.jsx";
 import { PrivateRoute } from "../PrivateRoute.jsx";
@@ -26,10 +26,11 @@ const ContactsPage = lazy(() =>
 const App = () => {
 const isRefreshing = useSelector(selectIsRefreshing);
 
-  const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(refresh());
-  }, [dispatch]);
+  // const dispatch = useDispatch();
+
+  // useEffect(() => {
+  //   dispatch(refresh());
+  // }, [dispatch]);
 
   return isRefreshing ? (
     <Loader />
