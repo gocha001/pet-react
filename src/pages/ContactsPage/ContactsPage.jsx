@@ -37,8 +37,8 @@ function ContactsPage() {
   useEffect(() => {
     if (isRefreshing === false) {
       dispatch(fetchContacts());
-    };
-  });
+    } else { return; };
+  }, [dispatch, isRefreshing]);
   
 
   return (
