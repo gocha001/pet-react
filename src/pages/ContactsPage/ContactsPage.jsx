@@ -23,6 +23,7 @@ function ContactsPage() {
   const contacts = useSelector(selectContacts);
   const [scr, setScr] = useState(0);
   const isRefreshing = useSelector(selectIsRefreshing);
+  console.log(isRefreshing);
 
   window.onscroll = () => {
     if (window.scrollY > 400) {
@@ -35,7 +36,7 @@ function ContactsPage() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (isRefreshing === false) {
+    if (isRefreshing === 'false') {
       dispatch(fetchContacts());
     } else { return; };
   }, [dispatch, isRefreshing]);
