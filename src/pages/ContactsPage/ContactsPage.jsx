@@ -15,12 +15,14 @@ import Error from "../../components/Error/Error.jsx";
 import { motion } from "framer-motion";
 import { slideInFromTop } from "../../components/motion/motion.js";
 import ScrollUp from '../../components/ScrollUp/ScrollUp.jsx';
+import { selectIsRefreshing } from "../../redux/auth/selectors.js";
 
 function ContactsPage() {
   const loading = useSelector(selectLoading);
   const error = useSelector(selectError);
   const contacts = useSelector(selectContacts);
   const [scr, setScr] = useState(0);
+  const isRefreshing = useSelector(selectIsRefreshing);
 
   window.onscroll = () => {
     if (window.scrollY > 400) {
@@ -33,8 +35,11 @@ function ContactsPage() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(fetchContacts());
-  }, [dispatch]);
+    if (isRefreshing === false) {
+      dispatch(fetchContacts());
+    };
+  }, [dispatch, isRefreshing]);
+  
 
   return (
     <>
