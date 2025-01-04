@@ -24,12 +24,13 @@ const ContactsPage = lazy(() =>
 );
 
 const App = () => {
+const isRefreshing = useSelector(selectIsRefreshing);
+
   const dispatch = useDispatch();
   useEffect(() => {
+    if (isRefreshing) return;
     dispatch(refresh());
-  }, [dispatch]);
-
-  const isRefreshing = useSelector(selectIsRefreshing);
+  }, [dispatch, isRefreshing]);
 
   return isRefreshing ? (
     <Loader />
