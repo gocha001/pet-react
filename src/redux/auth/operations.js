@@ -36,7 +36,7 @@ export const login = createAsyncThunk(
   async (credentials, thunkApi) => {
     try {
       const { data } = await Api.post("/auth/login", credentials);
-
+      console.log("Server response:", data); 
       setAuthHeader(data.accessToken);
 
       return data;
