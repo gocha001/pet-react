@@ -38,7 +38,7 @@ function ContactsPage() {
     if (isRefreshing === false) {
       dispatch(fetchContacts());
     };
-  }, [dispatch, isRefreshing]);
+  });
   
 
   return (
