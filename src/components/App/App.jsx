@@ -28,9 +28,8 @@ const isRefreshing = useSelector(selectIsRefreshing);
 
   const dispatch = useDispatch();
   useEffect(() => {
-    if (isRefreshing) return;
     dispatch(refresh());
-  }, [dispatch, isRefreshing]);
+  }, [dispatch]);
 
   return isRefreshing ? (
     <Loader />
