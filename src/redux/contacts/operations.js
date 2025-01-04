@@ -1,13 +1,20 @@
 // import axios from "axios";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { Api } from "../auth/operations";
+import { selectIsRefreshing } from "../auth/selectors";
+import { useSelector } from "react-redux";
 
 export const fetchContacts = createAsyncThunk(
   "contacts/fetchAll",
   async (_, thunkApi) => {
     try {
-      const { data } = await Api.get("/contacts");
-      return data;
+      const isRefreshing = useSelector(selectIsRefreshing);
+      if (isRefreshing === false) {
+        const { data } = await Api.get("/contacts");
+        return data;
+      } else {
+        return;
+      }
     } catch (error) {
       return thunkApi.rejectWithValue(error.message);
     }
