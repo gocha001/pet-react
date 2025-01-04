@@ -67,6 +67,11 @@ export const refresh = createAsyncThunk("auth/refresh", async (_, thunkApi) => {
 
   try {
     const { data } = await Api.post("/auth/refresh");
+     console.log("Server response:", data); // Перевірте, чи сервер повертає правильні дані
+
+     if (!data.accessToken) {
+       throw new Error("No accessToken in server response");
+     }
     return data;
     
   } catch (error) {
@@ -97,6 +102,7 @@ Api.interceptors.response.use(
       try {
         // Викликаємо refresh-дію
         const result = await store.dispatch(refresh());
+        console.log("Refresh result:", result);
 
         if (refresh.fulfilled.match(result)) {
           // Оновлюємо токен у заголовках
