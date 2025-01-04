@@ -102,7 +102,7 @@ Api.interceptors.response.use(
 
       try {
         // Викликаємо refresh-дію
-        const result = await store.dispatch(refresh());
+        const result = refresh();
         console.log("Refresh result:", result);
 
         // if (refresh.fulfilled.match(result)) {
