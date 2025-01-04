@@ -36,7 +36,7 @@ function ContactsPage() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (isRefreshing === 'false') {
+    if (isRefreshing === false) {
       dispatch(fetchContacts());
     } else { return; };
   }, [dispatch, isRefreshing]);
