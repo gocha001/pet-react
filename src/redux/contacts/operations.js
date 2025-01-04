@@ -9,7 +9,8 @@ export const fetchContacts = createAsyncThunk(
   async (_, thunkApi) => {
     try {
       const isRefreshing = useSelector(selectIsRefreshing);
-      if (isRefreshing === false) {
+      console.log(isRefreshing);
+      if (isRefreshing === 'false') {
         const { data } = await Api.get("/contacts");
         return data;
       } else {
