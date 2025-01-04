@@ -1,7 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { store } from "../store.js";
-import { setToken } from "./slice.js";
+// import { setToken } from "./slice.js";
 
 export const Api = axios.create({
   // baseURL: "https://connections-api.goit.global/",
@@ -105,12 +105,12 @@ Api.interceptors.response.use(
         const result = await store.dispatch(refresh());
         console.log("Refresh result:", result);
 
-        if (refresh.fulfilled.match(result)) {
+        // if (refresh.fulfilled.match(result)) {
           // Оновлюємо токен у заголовках
           const newToken = result.payload.accessToken;
 
           console.log("New token received:", newToken);
-          store.dispatch(setToken(newToken));
+          // store.dispatch(setToken(newToken));
 
           // Повторюємо запит
           originalRequest.headers.Authorization = `Bearer ${newToken}`;
@@ -121,12 +121,12 @@ Api.interceptors.response.use(
           console.log("Updated headers for retry:", originalRequest.headers);
 
           return Api(originalRequest);
-        } else {
-          // Якщо оновлення не вдалося
-          console.error("Refresh token failed:", result.payload);
-          store.dispatch(logout());
-          return Promise.reject(result.payload);
-        }
+        // } else {
+        //   // Якщо оновлення не вдалося
+        //   console.error("Refresh token failed:", result.payload);
+        //   store.dispatch(logout());
+        //   return Promise.reject(result.payload);
+        // }
       } catch (err) {
         console.error("Failed to refresh token:", err);
         store.dispatch(logout());

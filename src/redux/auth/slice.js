@@ -17,11 +17,11 @@ const initialState = {
 const slice = createSlice({
   name: "auth",
   initialState,
-  reducers: {
-    setToken(state, action) {
-      state.token = action.payload; // Оновлюємо токен
-    },
-  },
+  // reducers: {
+  //   setToken(state, action) {
+  //     state.token = action.payload; // Оновлюємо токен
+  //   },
+  // },
   extraReducers: (builder) => {
     builder
       .addCase(register.fulfilled, (state, action) => {
