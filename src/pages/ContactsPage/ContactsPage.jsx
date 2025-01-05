@@ -39,7 +39,7 @@ function ContactsPage() {
     if (isRefreshing) return;
     const timer = setTimeout(() => {
       dispatch(fetchContacts());
-    }, 1000);
+    }, 500);
      return () => clearTimeout(timer);
   }, [dispatch, isRefreshing]);
   
