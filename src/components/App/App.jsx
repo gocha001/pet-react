@@ -29,7 +29,14 @@ const isRefreshing = useSelector(selectIsRefreshing);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(refresh());
+    const initialize = async () => {
+      try {
+        await dispatch(refresh());
+      } catch (error) {
+        console.error("Error during refresh:", error);
+      }
+    };
+    initialize();
   }, [dispatch]);
 
   return isRefreshing ? (

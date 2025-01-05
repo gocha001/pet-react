@@ -92,10 +92,9 @@ Api.interceptors.response.use(
       try {
         const result = await store.dispatch(refresh());
           const newToken = result.payload.accessToken;
-
+        setAuthHeader(newToken);
+        
           originalRequest.headers.Authorization = `Bearer ${newToken}`;
-
-          setAuthHeader(newToken);
 
           return Api(originalRequest);
       } catch (err) {
