@@ -55,36 +55,27 @@ export const logout = createAsyncThunk("auth/logout", async (_, thunkApi) => {
     return thunkApi.rejectWithValue(error.message);
   }
 });
-let read = false;
+
 export const refresh = createAsyncThunk("auth/refresh", async (_, thunkApi) => {
-  read = true;
+  
   const savedToken = thunkApi.getState().auth.token;
-  console.log(savedToken);
+
   if (!savedToken) {
     return thunkApi.rejectWithValue("Token does not exist!");
   };
-
   setAuthHeader(savedToken);
-
   try {
     const {data} = await Api.post("/auth/refresh");
-    // const data = response.data;
-     console.log("Server response:", data); // Перевірте, чи сервер повертає правильні дані
 
      if (!data.accessToken) {
        throw new Error("No accessToken in server response");
      }
     return data;
-    
   } catch (error) {
     console.error("Error in refresh token:", error);
-    return thunkApi.rejectWithValue(error.response?.data || error.message);
-  } finally {
-    read = false;
+    return thunkApi.rejectWithValue(error.message);
   }
 });
-
-export { read };
 
 Api.interceptors.response.use(
   (response) => response,
