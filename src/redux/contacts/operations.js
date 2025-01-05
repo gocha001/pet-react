@@ -1,8 +1,5 @@
-// import axios from "axios";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { Api } from "../auth/operations";
-// import { selectIsRefreshing } from "../auth/selectors";
-// import { useSelector } from "react-redux";
 
 export const fetchContacts = createAsyncThunk(
   "contacts/fetchAll",

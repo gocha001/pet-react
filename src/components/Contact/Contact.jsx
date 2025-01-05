@@ -15,8 +15,7 @@ import * as Yup from "yup";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 
 const Contact = ({ id, name, number, email, contactType, isFavourite }) => {
-  // const isFavouriteString = isFavourite + "";
-  // console.log(isFavourite);
+  
   const dispatch = useDispatch();
 
   const [isOpen, setIsOpen] = useState(false);

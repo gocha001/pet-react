@@ -17,11 +17,6 @@ const initialState = {
 const slice = createSlice({
   name: "auth",
   initialState,
-  // reducers: {
-  //   setToken(state, action) {
-  //     state.token = action.payload; // Оновлюємо токен
-  //   },
-  // },
   extraReducers: (builder) => {
     builder
       .addCase(register.fulfilled, (state, action) => {
@@ -36,8 +31,6 @@ const slice = createSlice({
       })
       .addCase(logout.fulfilled, () => initialState)
       .addCase(refresh.fulfilled, (state, action) => {
-        // state.user.name = action.payload.name;
-        // state.user.email = action.payload.email;
         state.token = action.payload.accessToken;
         state.isLoggedIn = true;
         state.isRefreshing = false;

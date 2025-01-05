@@ -1,10 +1,8 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { store } from "../store.js";
-// import { setToken } from "./slice.js";
 
 export const Api = axios.create({
-  // baseURL: "https://connections-api.goit.global/",
   baseURL: "https://nodejs-hw-mongodb-9-lmos.onrender.com",
   withCredentials: true,
   // baseURL: "http://localhost:3000/",
@@ -12,7 +10,6 @@ export const Api = axios.create({
 
 const setAuthHeader = (token) => {
   Api.defaults.headers.common.Authorization = `Bearer ${token}`;
-  // Api.defaults.withCredentials = true;
 };
 
 export const register = createAsyncThunk(
@@ -24,7 +21,6 @@ export const register = createAsyncThunk(
       setAuthHeader(data.accessToken);
 
       return data;
-
     } catch (error) {
       return thunkApi.rejectWithValue(error.message);
     }
@@ -36,11 +32,10 @@ export const login = createAsyncThunk(
   async (credentials, thunkApi) => {
     try {
       const { data } = await Api.post("/auth/login", credentials);
-      console.log("Server response:", data); 
+
       setAuthHeader(data.accessToken);
 
       return data;
-
     } catch (error) {
       return thunkApi.rejectWithValue(error.message);
     }
@@ -50,26 +45,24 @@ export const login = createAsyncThunk(
 export const logout = createAsyncThunk("auth/logout", async (_, thunkApi) => {
   try {
     await Api.post("/auth/logout");
-
   } catch (error) {
     return thunkApi.rejectWithValue(error.message);
   }
 });
 
 export const refresh = createAsyncThunk("auth/refresh", async (_, thunkApi) => {
-  
   const savedToken = thunkApi.getState().auth.token;
 
   if (!savedToken) {
     return thunkApi.rejectWithValue("Token does not exist!");
-  };
+  }
   setAuthHeader(savedToken);
   try {
-    const {data} = await Api.post("/auth/refresh");
+    const { data } = await Api.post("/auth/refresh");
 
-     if (!data.accessToken) {
-       throw new Error("No accessToken in server response");
-     }
+    if (!data.accessToken) {
+      throw new Error("No accessToken in server response");
+    }
     return data;
   } catch (error) {
     console.error("Error in refresh token:", error);
@@ -81,7 +74,7 @@ Api.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalRequest = error.config;
-    
+
     if (
       error.response?.status === 401 &&
       !originalRequest._retry &&
@@ -91,18 +84,18 @@ Api.interceptors.response.use(
 
       try {
         const result = await store.dispatch(refresh());
-          const newToken = result.payload.accessToken;
+        const newToken = result.payload.accessToken;
         setAuthHeader(newToken);
-        
-          originalRequest.headers.Authorization = `Bearer ${newToken}`;
 
-          return Api(originalRequest);
+        originalRequest.headers.Authorization = `Bearer ${newToken}`;
+
+        return Api(originalRequest);
       } catch (err) {
         console.error("Failed to refresh token:", err);
         store.dispatch(logout());
         return Promise.reject(err);
       }
-    };
+    }
     return Promise.reject(error);
   }
 );
