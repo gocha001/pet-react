@@ -37,7 +37,10 @@ function ContactsPage() {
 
   useEffect(() => {
     if (isRefreshing) return;
+    const timer = setTimeout(() => {
       dispatch(fetchContacts());
+    }, 2000);
+     return () => clearTimeout(timer);
   }, [dispatch, isRefreshing]);
   
 
