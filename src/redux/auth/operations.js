@@ -55,8 +55,9 @@ export const logout = createAsyncThunk("auth/logout", async (_, thunkApi) => {
     return thunkApi.rejectWithValue(error.message);
   }
 });
-
+let read = false;
 export const refresh = createAsyncThunk("auth/refresh", async (_, thunkApi) => {
+  read = true;
   const savedToken = thunkApi.getState().auth.token;
   console.log(savedToken);
   if (!savedToken) {
@@ -78,18 +79,18 @@ export const refresh = createAsyncThunk("auth/refresh", async (_, thunkApi) => {
   } catch (error) {
     console.error("Error in refresh token:", error);
     return thunkApi.rejectWithValue(error.response?.data || error.message);
+  } finally {
+    read = false;
   }
 });
+
+export { read };
 
 Api.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalRequest = error.config;
-
-    console.log("Original request:", originalRequest.url);
-    console.log("Response status:", error.response?.status);
-    console.log("Retry flag:", originalRequest._retry);
-
+    
     if (
       error.response?.status === 401 &&
       !originalRequest._retry &&
@@ -97,43 +98,21 @@ Api.interceptors.response.use(
     ) {
       originalRequest._retry = true;
 
-      console.log("Retry flag:", originalRequest._retry);
-      console.log("Retrying with refresh token...");
-
       try {
-        // Викликаємо refresh-дію
         const result = await store.dispatch(refresh());
-        console.log("Refresh result:", result);
-
-        // if (refresh.fulfilled.match(result)) {
-          // Оновлюємо токен у заголовках
           const newToken = result.payload.accessToken;
 
-          console.log("New token received:", newToken);
-          // store.dispatch(setToken(newToken));
-
-          // Повторюємо запит
           originalRequest.headers.Authorization = `Bearer ${newToken}`;
 
           setAuthHeader(newToken);
 
-          console.log("Retrying with new token:", newToken);
-          console.log("Updated headers for retry:", originalRequest.headers);
-
           return Api(originalRequest);
-        // } else {
-        //   // Якщо оновлення не вдалося
-        //   console.error("Refresh token failed:", result.payload);
-        //   store.dispatch(logout());
-        //   return Promise.reject(result.payload);
-        // }
       } catch (err) {
         console.error("Failed to refresh token:", err);
         store.dispatch(logout());
         return Promise.reject(err);
       }
-    }
-
+    };
     return Promise.reject(error);
   }
 );

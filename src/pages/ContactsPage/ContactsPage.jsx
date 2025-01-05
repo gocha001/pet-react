@@ -16,6 +16,7 @@ import { motion } from "framer-motion";
 import { slideInFromTop } from "../../components/motion/motion.js";
 import ScrollUp from '../../components/ScrollUp/ScrollUp.jsx';
 import { selectIsRefreshing } from "../../redux/auth/selectors.js";
+import { read } from "../../redux/auth/operations.js";
 
 function ContactsPage() {
   const loading = useSelector(selectLoading);
@@ -36,9 +37,9 @@ function ContactsPage() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (isRefreshing) return
+    if (read) return
       dispatch(fetchContacts());
-  }, [dispatch, isRefreshing]);
+  }, [dispatch]);
   
 
   return (
