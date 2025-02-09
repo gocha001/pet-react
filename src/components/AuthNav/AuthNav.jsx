@@ -11,7 +11,7 @@ const AuthNav = () => {
         Login
       </NavLink>
       <NavLink
-        to="registed"
+        to="register"
         className={({ isActive }) => (isActive ? css.active : css.link)}
       >
         Registration

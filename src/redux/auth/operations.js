@@ -5,13 +5,12 @@ import { store } from "../store.js";
 export const Api = axios.create({
   baseURL: "https://nodejs-hw-mongodb-9-lmos.onrender.com",
   withCredentials: true,
-  // baseURL: "http://localhost:3000/",
 });
 
 const setAuthHeader = (token) => {
   Api.defaults.headers.common.Authorization = `Bearer ${token}`;
 };
-
+// baseURL: "http://localhost:3000/",
 export const register = createAsyncThunk(
   "register",
   async (credentials, thunkApi) => {
